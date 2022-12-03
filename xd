@@ -1,0 +1,123 @@
+::1. Wyświetl na ekranie Hello world.
+
+echo Hello world
+
+::2. Napisz skrypt, który usunie wszystkie pliki w katalogu z rozszerzeniem *.txt.
+del /P /A *.txt
+
+::3. Napisz skrypt, który skopiuje wszystkie pliki (z rozszerzeniem *.txt, *jpg, *gif) z jednego katalogu do drugiego.
+
+xcopy 1\* 2\*
+
+::4. Napisz skrypt, który utworzy 10 katalogów nazwanych następująco: folder1, folder2, itd.
+
+for /L %%k IN (1,1,10) DO @mkdir folder%%k
+
+::5. Napisz skrypt, który zapyta użytkownika o imię. Następnie to imię wyświetli w nazwie okna (konsoli).
+@echo off
+echo Wpisz imie
+set /p imie=">>"
+echo Twoje imie to %imie% sprawdz nazwe okna
+title %imie%
+
+::6. Napisz skrypt, który przyjmie dwie liczby jako parametry z linii poleceń. Następnie wyświetli na ekranie wynik sumy/różnicy/iloczynu/ilorazu tych liczb.
+
+@echo off
+echo Podaj 1 liczbe
+set /p a=">>"
+echo Podaj 2 liczbe
+set /p b=">>"
+set /a "c=%a%+%b%"
+echo Dodawanie %c%
+set /a "c=%a%-%b%"
+echo Odejmowanie %c%
+set /a "c=%a%*%b%"
+echo Mnozenie %c%
+set /a "c=%a%/%b%"
+echo Dzielenie %c%
+
+::7. Napisz skrypt powłoki windows, który pobierze od użytkownika nazwę miesiąca, a wydrukuje na ekranie odpowiadający mu numer. Na przykład: dla Maj -> 5.
+
+@echo off
+echo Podaj nazwe miesiaca bez polskich znakow
+set /p month=">>"
+if %month%==styczen echo 1
+if %month%==luty echo 2
+if %month%==marzec echo 3
+if %month%==kwiecien echo 4
+if %month%==maj echo 5
+if %month%==czerwiec echo 6
+if %month%==lipiec echo 7
+if %month%==sierpien echo 8
+if %month%==wrzesien echo 9
+if %month%==pazdziernik echo 10
+if %month%==listopad echo 11
+if %month%==grudzien echo 12 
+
+::8. Napisz skrypt, który będzie prostym menu, w którym będą następujące opcje:
+::Uruchom. 
+::Backup.
+::Informacje.
+::Koniec.
+::Następnie dopisz możliwość uruchomienia innego skryptu dla polecenia Uruchom, dla Backup wykona kopię wszystkich plików w wybranym katalogu i umieści je w nowym folderze. Polecenie Informacje powinny wyświetlić na ekranie informacje o autorze tego rozwiązania. Koniec oznacza wyłączenie konsoli. 
+
+@echo off
+:Start
+echo Uruchom
+echo Backup
+echo Informacje
+echo Koniec
+echo Wpisz nazwe polecenia:
+set /P pol=">>"
+if %pol%==Uruchom echo Wpisz sciezke skryptu & set /p ex=">>" & call %ex%
+if %pol%==Backup mkdir Backup & xcopy *.* .\Backup & goto Start
+if %pol%==Informacje echo Autorem rozwiazania jest Kamil Farnicki, lubie placki & goto Start
+if %pol%==Koniec exit /B
+
+::9. Napisz skrypt w batch, który przyjmie wyraz jako argument i usunie ten wyraz z wybranego pliku tekstowego. 
+::Na przykład zadanie9.bat kot
+::W pliku znajduje się tekst Ala ma kota, który ma kota}. Po wykonaniu skryptu, w pliku pozostanie Ala ma a, który ma a.
+
+@echo off
+setlocal enableDelayedExpansion
+if [%1%]==[] echo Brak slowa w argumencie
+set "word=%1%"
+set "eword="
+echo Ala ma kota, ktory ma kota>ala.txt
+rename ala.txt ala.tmp
+(
+	for /F "delims=0123456789" %%a in ('findstr /N "^" "ala.tmp"') do (
+		set "line=%%a"
+		set "line=!line:~1!"
+		if defined line (
+			set "line=!line:%word%=%eword%!"
+		)
+		echo(!line!
+		endlocal
+	)
+) >ala.txt
+
+del ala.tmp
+echo Plik po zmianie:
+type ala.txt
+
+::10. Napisz skrypt, który stworzy plik tekstowy o nazwie rozwiazanieZad10 i zapisze w nim informacje o wszystkich plikach w bieżącym katalogu, które są starsze niż 30 dni. 
+
+@echo off
+forfiles /p "%cd%" /s /d -30 /c "cmd /c echo @file">rozwiazanieZad10.txt
+
+::11. Napisz skrypt pobierający tekst od użytkownika. Następnie skrypt go odwróci i wpisze do pliku tekstowego.
+@echo off
+setlocal enabledelayedexpansion
+set /P line=Tekst: 
+set liczba=0
+
+:start
+call set temp=%%line:~%liczba%,1%%%
+set /a liczba+=1
+if not "%temp%" equ "" (
+	set rline=%temp%%rline%
+	goto start
+)
+echo %rline%>z11.txt
+pause
