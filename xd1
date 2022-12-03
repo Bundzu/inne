@@ -1,0 +1,222 @@
+#1 Napisz skrypt, który będzie prostym kalkulatorem. Zwróć uwagę na dzielenie przez 0.
+def dodaj(x, y):
+    return x+y
+
+def odejmij(x, y):
+    return x-y
+
+def pomnoz(x, y):
+    return x*y
+
+def dziel(x, y):
+    return x/y
+
+print("Wybierz operację: \n 1.Dodawanie\n 2.Odejmnowanie\n 3.Mnożenie\n 4.Dzielenie\n")
+
+while True:
+    wybor = input("Wybór operacji (1/2/3/4): ")
+    if wybor in ('1','2','3','4'):
+        x = float(input("Pierwsza liczba "))
+        y = float(input("Druga liczba "))
+        
+        if y == 0 and wybor =='4':
+            print("nie można dzielić przez 0")
+            break
+        else:
+            if wybor =='1':
+                print(x, "+", y, "=", dodaj(x, y))
+            elif wybor =='2':
+                print(x, "-", y, "=", odejmij(x, y))
+            elif wybor =='3':
+                print(x, "*", y, "=", pomnoz(x, y))
+            elif wybor =='4':
+                print(x, "/", y, "=", dziel(x, y))
+            
+        nastepna = input("Czy policzyć coś jeszcze (tak/nie)? ")
+        if nastepna =="nie":
+            break
+    else:
+        print("niepoprawne wejście")
+
+#2 Napisz skrypt, który obliczy sumę/wartość średnią/medianę wpisanych liczb przez użytkownika liczb całkowitych.
+
+print("wpisz ile chcesz liczb\n")
+ilosc = int(input())
+liczby =[]
+for i in range(0,ilosc,1):
+    print ("wpisz liczbę ")
+    temp = int(input())
+    liczby.append(temp)
+print("wpisane liczby: ", liczby)
+
+suma = 0
+for i in liczby:
+    suma += i
+print ("suma: ", suma)
+
+srednia = suma / len(liczby)
+print ("średnia: ", srednia)
+
+#mediana
+liczby.sort()
+n = len(liczby)
+if n % 2 == 0:
+    m1 = liczby[n//2]
+    m2 = liczby[n//2 - 1]
+    mediana = (m1 + m2)/2
+else:
+    mediana = liczby[n//2]
+print("mediana: ",mediana)
+
+
+#3 Napisz skrypt, który będzie pytał użytkownika o szyfrowanie/deszyfrowanie Cezarem. Następnie dany tekst zaszyfruje bądź odszyfruje.
+
+def zakoduj(text, shift):
+    presuniecie = shift % 26
+    wynik = ""
+
+    for x in text:
+        if x.isalpha():
+            male = (ord(x) + presuniecie > 122 and ord(x) <= 122)
+            duze = (ord(x) + presuniecie > 90 and ord(x) <= 90)
+            if male or duze:
+                wynik += (chr(ord(x) - 26 + presuniecie))
+            else:
+                wynik += (chr(ord(x) + presuniecie))
+        else:
+            wynik += x
+    print(wynik)
+
+
+def odszyfruj(text, shift):
+    presuniecie = shift % 26
+    wynik = ""
+
+    for x in text:
+        if x.isalpha():
+            male = (ord(x) - presuniecie < 97 and ord(x) >= 97)
+            duze = (ord(x) - presuniecie < 65 and ord(x) >= 65)
+            if (male or duze):
+                wynik += (chr(ord(x) + 26 - presuniecie))
+            else:
+                wynik += (chr(ord(x) - presuniecie))
+        else:
+            wynik += x
+
+    print(wynik)
+    
+wybor = True
+while (wybor):
+    print("Wybierz opcję: \n1. Szyfrowanie\n2. Deszyfrowanie\n3. Koniec")
+    wybor = input("Wybierz opcje: ")
+
+    if wybor == "1":
+        text = input("Podaj tekst: ")
+        shift = int(input("Podaj przesunięcie: "))
+        zakoduj(text, shift)
+
+    if wybor == "2":
+        text = input("Podaj tekst: ")
+        shift = int(input("Podaj przesunięcie: "))
+        odszyfruj(text, shift)
+    if wybor =="3":
+        break
+
+#4 Napisz skrypt, który sprawdzi czy wprowadzone słowo jest palindromem.
+
+text = input("Wpisz tekst: ").replace(" ", "")
+
+def palindrom(t1, t2):
+    t1 = t1.lower()
+    t2 = t2.lower()
+    print(t1)
+    print(t2[::-1])
+    print(t1 == t2[::-1])
+
+if(len(text)%2 == 0):
+    palindrom(text[:int(len(text)/2)], text[int(len(text) / 2):])
+
+else:
+    palindrom(text[:int(len(text)/2)], text[int(len(text) / 2)+1:])
+
+#5 Napisz skrypt, który zliczy ilość spacji w pliku, a wynik zapisze w nowym pliku tekstowym.
+
+try:
+    odczyt = "./input.txt"
+    fileRead = open(odczyt, "r")
+    fileReadContainer = fileRead.read()
+except:
+    print("Plik nie istnieje")
+else:
+    zapis = "./output.txt"
+    fileSave = open(zapis, "w", encoding='utf-8')
+
+    n = 0
+    for letter in fileReadContainer:
+        if letter == " ":
+            n += 1
+    fileSave.write("Ilość spacji: " + str(n))
+    print("Zapisane w pliku: ", fileSave.name)
+
+#6 Zaimplementuj klasę Kolo, która będzie miała dwie metody (bezargumentowe) obliczające pole kola, oraz obwód.
+
+import math
+
+class Kolo:
+    def __init__(self, r):
+        self.r = r
+
+    def poleKola(self):
+        print("Pole: {}".format(math.pi * math.pow(self.r, 2)))
+
+    def obwodKola(self):
+        print("Obwód: {}".format(2 * math.pi * self.r))
+
+r = int(input("Podaj promień koła: "))
+kolo = Kolo(r)
+kolo.poleKola()
+kolo.obwodKola()
+
+#7 Utwórz klasę Punkt, która będzie reprezentować punkt $(x,y)$. Następnie utwórz dwa obiekty tej klasy i oblicz odległość pomiędzy tymi punktami (przy pomocy funkcji).
+
+import math
+
+class Punkt:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+def odl(pointOne, pointTwo):
+    st1 = abs(pointOne.x - pointTwo.x)
+    st2 = abs(pointOne.y - pointTwo.y)
+
+    longestSide = math.pow(st1, 2) + math.pow(st2, 2)
+    print("Odległość między punktami ({0},{1}), a ({2},{3}) wynosi: {4}"
+.format(p1.x, p1.y, p2.x, p2.y, math.sqrt(longestSide)))
+
+p1 = Punkt(5, -3)
+p2 = Punkt(-4, -8)
+odl(p1, p2)
+
+#8 Utwórz klasę, która będzie posiadała metodę odwracają ciąg znaków po wyrazie. Przykład: in: Jestem Groot. Jestem Groot. out: Groot. Jestem Groot. Jestem
+
+class Text:
+    def __init__(self, text):
+        self.text = text
+
+    def odwroc(self):
+        kropka = "."
+        result = []
+        
+        for sentence in self.text.split(kropka):
+            if sentence:
+                nZdanie = sentence + kropka
+                spacja = nZdanie.split(" ")[::-1]
+                for word in spacja:
+                    result.append(word)
+        print(" ".join(result).strip())
+
+pisz = input("Wpisz tekst: ")
+
+t = Text(pisz)
+t.odwroc()
