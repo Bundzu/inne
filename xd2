@@ -1,0 +1,398 @@
+Zad1 
+program konsolowy obliczający pole powierzchni bocznej i objętość prostopadłościanu prawidłowego. podstawa a i wysokość h. program sprawdza poprawność danych.
+package javaapplication3;
+import java.io.*;
+
+public class JavaApplication3 {
+
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println("Podaj krawedz podstawy: ");
+
+        String krawedz = in.readLine();
+
+        System.out.println("Podaj wysokosc figury: ");
+
+        String wysokosc = in.readLine();
+
+        double a = Double.parseDouble(krawedz);
+        double h = Double.parseDouble(wysokosc);
+
+        if(a > 0 && h > 0)
+        {
+            double poleB = a*h;
+
+            double V = a*a*h;
+
+            System.out.println("Pole boczne: " + poleB);
+            System.out.println("Objetosc: " + V);
+        }
+        else {
+            System.out.println("Podano niepoprawne wartości!");
+        }
+    }
+}
+Zad2
+używając klasy Swing w panelu należy utworzyć rysunek linii prostych i prostokąta tak jak na rysunku
+
+package javaapplication4;
+import javax.swing.*;
+import java.awt.*;
+
+
+public class JavaApplication4 {
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("TEST");
+
+        frame.setSize(300, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Drawing panel = new Drawing();
+	panel.setBackground(Color.yellow);
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+    
+}
+
+//Klasa Drawing
+
+package javaapplication4;
+import javax.swing.*;
+import java.awt.*;
+
+public class Drawing extends JPanel {
+    @Override
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        // Rysowanie linii
+        g.drawLine(100, 10, 250, 160);
+        g.drawLine(250, 10, 100, 160);
+
+        // Rysowanie prostokąta
+        g.drawRect(100, 10, 150, 150);
+
+    	//Rysowanie koła
+        g.drawOval(100,10,150,150);
+    }
+}
+
+Zad 3 Zaprojektować klasę Książka. Za pomocą klasy należy utworzyć listę książek i posortować wpisane rekordy do listy tytułami alfabetycznie zgodnie ze słownikiem polskim
+
+//Klasa Ksiazka
+package javaapplication5;
+
+public class Ksiazka {
+    public Ksiazka(String name)
+    {
+        Name = name;
+    }
+    private String Name;
+
+    private String author;
+
+    private int year;
+
+    public <T> Comparable<T> getTytul() {
+        return (Comparable<T>) Name;
+    }
+}
+
+package javaapplication5;
+import java.text.Collator;
+import java.util.*;
+
+public class JavaApplication5 {
+
+    public static void main(String[] args) {
+        Ksiazka ksiazka1 = new Ksiazka("programowanie");
+        Ksiazka ksiazka2 = new Ksiazka("jedzenie");
+        Ksiazka ksiazka3 = new Ksiazka("gotowanie");
+        Ksiazka ksiazka4 = new Ksiazka("muzyka");
+        Ksiazka ksiazka5 = new Ksiazka("algorytmy");
+        Ksiazka ksiazka6 = new Ksiazka("systemu operacyjne");
+        Ksiazka ksiazka7 = new Ksiazka("zwierzęta");
+        Ksiazka ksiazka8 = new Ksiazka("rośliny");
+        Ksiazka ksiazka9 = new Ksiazka("rosliny");
+
+        List<Ksiazka> ksiazki = new ArrayList<>();
+
+        ksiazki.add(ksiazka1);
+        ksiazki.add(ksiazka2);
+        ksiazki.add(ksiazka3);
+        ksiazki.add(ksiazka4);
+        ksiazki.add(ksiazka5);
+        ksiazki.add(ksiazka6);
+        ksiazki.add(ksiazka7);
+        ksiazki.add(ksiazka8);
+        ksiazki.add(ksiazka9);
+
+
+        Collator plCollator = Collator.getInstance(new Locale("pl","PL"));
+        Collections.sort(ksiazki, (Ksiazka k1, Ksiazka k2) -> plCollator.compare(k1.getTytul(), k2.getTytul()));
+
+        for(int i=0;i<10;i++)
+        {
+            System.out.println(ksiazki.get(i).getTytul());
+        }
+    }
+    
+}
+
+Zad 4 Należy zaprojektować klasę Punkt2D. Następnie zaprojektować klasę Punkt2DKolor dziedziczącą po klasie Punkt 2D. Jakie konstruktory i metody są niezbędne do poprawnego działania obu klas?
+
+//klasa punkt2d
+
+package javaapplication6;
+
+public class Punkt2D {
+    private double x;
+    private double y;
+
+    public Punkt2D() {
+        x = 0;
+        y = 0;
+
+        System.out.println("Konstruktor bezparametrowy");
+    }
+
+    public Punkt2D(double x, double y) {
+        this.x = x;
+        this.y = y;
+
+        System.out.println("Konstruktor z parametrami");
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+}
+
+//klasa punkt2dKolor
+package javaapplication6;
+
+public class Punkt2DKolor extends Punkt2D{
+    private String color;
+
+    public Punkt2DKolor() {
+        super();
+        color = "black";
+    }
+
+    public Punkt2DKolor(double x, double y, String color) {
+        super(x, y);
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+
+    public String toString() {
+        return super.toString() + "Color: " + color;
+    }
+}
+Zad 5
+Proszę wyjaśnić pojęcie serializacji i deserializacji na przykładzie klasy Książka
+
+Serializacja i deserializacja są procesami pozwalającymi na przekształcenie obiektów programu w formie binarnej (np. do postaci pliku) oraz odwrotnie, 
+przekształcenie danych binarnych na obiekt programu.
+
+package javaapplication7;
+import java.io.*;
+
+public class JavaApplication7 {
+
+    public static void main(String[] args) {
+        Ksiazka ksiazka = new Ksiazka("Programowanie");
+
+        try (FileOutputStream fos = new FileOutputStream("C:\\CS\\ksiazka.txt");
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(ksiazka);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (FileInputStream fis = new FileInputStream("C:\\CS\\ksiazka.txt");
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            Ksiazka ksiazkaDeserializowana = (Ksiazka) ois.readObject();
+            System.out.println(ksiazkaDeserializowana.toString());
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
+}
+
+//klasa ksiazka
+package javaapplication7;
+import java.io.Serializable;
+
+public class Ksiazka implements Serializable {
+
+    public Ksiazka(String name)
+    {
+        Name = name;
+    }
+    private String Name;
+
+    private String author;
+
+    private int year;
+
+    public <T> Comparable<T> getTytul() {
+        return (Comparable<T>) Name;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Nazwa: " + Name;
+    }
+}
+
+Zad // Sortowanie szybkie
+
+public class Algorytm {
+    static void swap(int[] arr, int i, int j)
+    {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    static int partition(int[] arr, int low, int high)
+    {
+
+        int pivot = arr[high];
+
+        int i = (low - 1);
+
+        for (int j = low; j <= high - 1; j++) {
+
+            if (arr[j] < pivot) {
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i + 1, high);
+        return (i + 1);
+    }
+
+    static void quickSort(int[] arr, int low, int high)
+    {
+        if (low < high) {
+
+            int pi = partition(arr, low, high);
+            
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+}
+
+Zad Sortowanie przez scalanie
+
+import java.util.Arrays;
+
+public class Algorytm {
+    public static void mergeSort(int[] array) {
+        if (array.length > 1) {
+            int middle = array.length / 2;
+            int[] left = Arrays.copyOfRange(array, 0, middle);
+            int[] right = Arrays.copyOfRange(array, middle, array.length);
+
+            mergeSort(left);
+            mergeSort(right);
+
+            merge(array, left, right);
+        }
+    }
+
+    private static void merge(int[] array, int[] left, int[] right) {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        while (i < left.length && j < right.length) {
+            if (left[i] < right[j]) {
+                array[k] = left[i];
+                i++;
+            } else {
+                array[k] = right[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < left.length) {
+            array[k] = left[i];
+            i++;
+            k++;
+        }
+
+        while (j < right.length) {
+            array[k] = right[j];
+            j++;
+            k++;
+        }
+    }
+}
+
+import javax.swing.*;
+import java.util.Random;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Random rand = new Random();
+
+        int len = 100000000;
+
+        int[] array = new int[len];
+
+
+
+        for(int i =0;i<len;i++)
+        {
+            int n = rand.nextInt(100000);
+
+            array[i]=n;
+        }
+        long startTime = System.nanoTime();
+
+        Algorytm.mergeSort(array);
+
+        long endTime   = System.nanoTime();
+        double totalTime = endTime - startTime;
+        System.out.println(totalTime/1000000000);
+    }
+}
