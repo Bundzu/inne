@@ -1,201 +1,250 @@
-# Zadanie 1
-# Algorytm wyszukiwania największej/najmniejszej liczby w danym zbiorze, 
-import random
-lista = []
-for x in range(10):                       #generowanie losowych wartości w liście
-    lista.append(random.randint(0,100)) 
-print ("Wylosowana lista",lista)
-duza = lista[0]                           #przypisujemy od razu wartości z zerowego elementu i zaczynamy pętle od następnego elementu
-mala = lista[0]                            
-for i in lista[1:]:                       #porównywanie liczb w liście, pomijamy element zerowy więc pętla wykona się tylko 9 razy
-    if mala > i:
-        mala = i
-    if duza < i :
-        duza = i
-        
-print("Najmniejsza liczba:", mala)
-print("Największa liczba:", duza)
+ZADANIE 1 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-#Zadanie 2
-# Algorytm wyszukiwania największej liczby w danym zbiorze.
-import random
-lista2 = []
-for x in range(10):                       #generowanie losowych wartości w liście
-    lista2.append(random.randint(0,100)) 
-print ("Wylosowana lista",lista2)
 
-big = lista2[0]
-for i in lista2[1:]:                      #pomijamy zerowy element w liście bo jest już przypisany
-    if big < i:
-        big = i
-print("Największą liczbą jest:", big)
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
-#Zadanie 3
-#Zaimplementuj stos lub kolejkę (wersja wskaźnikowa lub tablicowa).
-#stos wersja tablicowa
-class stosik:
-    def __init__(self):
-        self.items = []
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        double r = 0;
+		double h = 0;
+        try {
+            System.out.print("Podaj r: ");
+            a = scanner.nextDouble();
+            System.out.print("Podaj h: ");
+            h = scanner.nextDouble();
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        if(h <=0 || a <= 0)
+        {
+            System.out.println("dlugosci musza byc wieksze od zera");
+            return;
+        }
+        System.out.println("Pole powierzchni bocznej wynosi " + 6.283185307*r*h);
+        System.out.println("Objętość wynosi " + 3.14159265*r*r*h);
+    }
+}
 
-    def push(self, item):			#dodanie elementu na górę stosu
-        self.items.append(item)
-    def pop(self):					#pobranie elementu z góry
-        return self.items.pop()
-    def peek(self):					#odczytanie wartości z góry
-        return self.items[-1]
-    def size(self):					#liczba elementów na stosie
-        return len(self.items)
-    def is_empty(self):				#sprawdza czy pusty
-        return self.items == []
+ZADANIE 2 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-stos = stosik()								#nie udało mi się użyć tablicy przy użyciu import array więc pozostałem przy liście
-print("czy jest pusta?",stos.is_empty())
-print("rozmiar:",stos.size())
-stos.push(4) 
-stos.push(20) 
-print("ostatni element:",stos.peek())
-stos.push(60) 
-stos.push(85) 
-print("rozmiar:",stos.size())
-print("czy jest pusta?:",stos.is_empty()) 
-print("zdjęcie ze stosu",stos.pop()) 
-print("rozmiar:",stos.size())
 
-#boyer-moore
-def strong_suffix(shift, pos, wzor, m):
+import javax.swing.*;
+import java.awt.*;
 
-	i = m 
-	j = m + 1
-	pos[i] = j
+public class Drawing extends JPanel {
+    @Override
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
 
-	while i > 0:
-		while j <= m and wzor[i - 1] != wzor[j - 1]:
-			if shift[j] == 0:
-				shift[j] = j - i
-			j = pos[j]
-		i -= 1
-		j -= 1
-		pos[i] = j
+        //  linie
+        g.drawLine(100, 10, 250, 160);
+        g.drawLine(250, 10, 100, 160);
 
-def innyw(shift, pos, wzor, m):
-	j = pos[0]
-	for i in range(m + 1):
-		if shift[i] == 0:
-			shift[i] = j
-		if i == j:
-			j = pos[j]
-            
-def search(text, wzor):
+    	// koło
+        g.drawOval(100,10,150,150);
+    }
+}
 
-	s = 0
-	m = len(wzor)
-	n = len(text)
-	pos = [0] * (m + 1)
-	shift = [0] * (m + 1)
-    
-	strong_suffix(shift, pos, wzor, m)
-	innyw(shift, pos, wzor, m)
+public class Main {
 
-	while s <= n - m:
-		j = m - 1
-		while j >= 0 and wzor[j] == text[s + j]:
-			j -= 1
-		if j < 0:
-			print("Znaleziono od znaku: %d" % s)
-			s += shift[0]
-		else:
-			s += shift[j + 1]
+    public static void main(String[] args) {
+     JFrame frame = new JFrame("TEST");
 
-text = "Ala ma kota, kot ma Alę"
-wzor = "kot"
-search(text, wzor)
+        frame.setSize(300, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-# Algorytm Karpa-Rabina
-def search(wzor, txt, q):
-    M = len(wzor)
-    N = len(txt)
-    i = j = w = t = 0
-    h = 1
- 
-    for i in range(M-1):
-        h = (h*d) % q
+        Drawing panel = new Drawing();
+	panel.setBackground(Color.yellow);
 
-    for i in range(M):
-        w = (d*w + ord(wzor[i])) % q
-        t = (d*t + ord(txt[i])) % q
- 
-    for i in range(N-M+1):
-        if w == t:
-            for j in range(M):
-                if txt[i+j] != wzor[j]:
-                    break
-                else:
-                    j += 1
-
-            if j == M:
-                print("Znaleziono od znaku: " + str(i))
- 
-        if i < N-M:
-            t = (d*(t-ord(txt[i])*h) + ord(txt[i+M])) % q
-            if t < 0:
-                t = t+q
- 
-d = 256 # liczba znaków w rozszerzonym ASCII
-txt = "Ala ma kota, kot ma Alę"
-wzor = "kot"
-q = 347     # liczba pierwsza potrzebna do obliczeń
-print(txt, "\n Szukane:", wzor)
-search(wzor, txt, q)
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+}
 
 
 
-#bubblesort
-import random
-import time
-lista = []
-for x in range(20000):                                       # generowanie losowych wartości w liście
-    lista.append(random.randint(-10000,10000))
-print ("Wylosowana lista: \n",lista)
-start = time.time()
+ZADANIE 3 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-i = j = 0
-n = len(lista)
-for i in range(n-1):                                        # ostatni element będzie posortowany więc pętla wykona się o 1 mniej
-    for j in range(0, n-i-1):
-        if lista[j] > lista[j + 1]:                         # jeżeli aktualna liczba jest większa od następnej
-            lista[j], lista[j+1] = lista[j+1], lista[j]     # zamiana liczb w liście
+public class Plytoteka {
 
-print ("po sortowaniu: \n",lista)
-end = time.time()
-print ("Czas: ", end - start)
+    public Plytoteka(String name)
+    {
+        Name = name;
+    }
+    private String Name;
 
-#quicksort
-import time
-import random
-lista = []
-for x in range(20000):                        # generowanie losowych wartości w liście
-    lista.append(random.randint(-10000,10000))
+    private String autor;
 
-print ("Wylosowana lista: \n",lista)
 
-def quicks(lista):
-    length = len(lista)
-    if length <= 1:                 # lista musi być większa niż 1
-        return lista
-    else:
-        pivot = lista.pop()         # bierzemy jako pivot ostatni element w liście
+    public <T> Comparable<T> getTytul() {
+        return (Comparable<T>) Name;
+    }
+}
 
-    wieksze = []                    # większe i mniejsze liczby od pivota
-    mniejsze = []
+import java.text.Collator;
+import java.util.*;
 
-    for item in lista:
-        if item > pivot:
-            wieksze.append(item)    # dodajemy elementy do listy wieksze dla liczb większych od pivota
-        else:
-            mniejsze.append(item)
-    return quicks(mniejsze) + [pivot] + quicks(wieksze)
+public class Main {
+    public static void main(String[] args) {
 
-start = time.time()
-print("Po sortowaniu: \n", quicks(lista))
-end = time.time()
-print ("Czas: ", end - start)
+        Plytoteka utwor1 = new Plytoteka("nothing else matters");
+        Plytoteka utwor2 = new Plytoteka("unforgivable 1");
+        Plytoteka utwor3 = new Plytoteka("unforgivable 2");
+        Plytoteka utwor4 = new Plytoteka("unforgivable 3");
+        Plytoteka utwor5 = new Plytoteka("w grocie krola gor");
+        Plytoteka utwor6 = new Plytoteka("symfonia lenningradzka");
+        Plytoteka utwor7 = new Plytoteka("rechot zab");
+        Plytoteka utwor8 = new Plytoteka("szum morza");
+        Plytoteka utwor9 = new Plytoteka("bialy szum");
+
+        List<Plytoteka> piosenki = new ArrayList<>();
+
+        piosenki.add(utwor1);
+        piosenki.add(utwor2);
+        piosenki.add(utwor3);
+        piosenki.add(utwor4);
+        piosenki.add(utwor5);
+        piosenki.add(utwor6);
+        piosenki.add(utwor7);
+        piosenki.add(utwor8);
+        piosenki.add(utwor9);
+
+
+        Collator abc = Collator.getInstance(new Locale("pl","PL"));
+        Collections.sort(piosenki, (Plytoteka u1, Plytoteka u2) -> abc.compare(u1.getTytul(), u2.getTytul()));
+
+        for(int i=0;i<10;i++)
+        {
+            System.out.println(piosenki.get(i).getTytul());
+        }
+    }
+}
+
+
+
+ZADANIE 4 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+public class Punkt2D {
+
+    private double x;
+    private double y;
+
+    public Punkt2D() {
+        x = 0;
+        y = 0;
+
+        System.out.println("Konstruktor domyslny");
+    }
+
+    public Punkt2D(double x, double y) {
+        this.x = x;
+        this.y = y;
+
+        System.out.println("Konstruktor parametryczny");
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+}
+
+public class Punkt3D extends Punkt2D{
+
+    private double z;
+
+    public Punkt2DKolor() {
+        super();
+        z = 0;
+    }
+
+    public Punkt2DKolor(double x, double y, double z) {
+        super(x, y);
+        this.z = z;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
+    }
+
+
+    public String toString() {
+        return super.toString() + z;
+    }
+}
+
+
+ZADANIE 5 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Serializacja to przekształcenie obiekt -> zerojedynki, a deserializacja na odwrót
+
+import java.io.Serializable;
+
+public class Plytoteka implements Serializable {
+
+    public Plytoteka(String name)
+    {
+        Tytul = name;
+    }
+    private String Tytul;
+
+    private String autor;
+
+    public <T> Comparable<T> getTytul() {
+        return (Comparable<T>) Tytul;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Nazwa: " + Tytul;
+    }
+}
+
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Plytoteka utwor1 = new Plytoteka("chopin nokturn");
+
+        try (FileOutputStream fos = new FileOutputStream("E:\\CS\\utwor1.txt");
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(utwor1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (FileInputStream fis = new FileInputStream("E:\\CS\\utwor1.txt");
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            Plytoteka utwor1Deserializowany = (Plytoteka) ois.readObject();
+            System.out.println(utwor1Deserializowany.toString());
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
